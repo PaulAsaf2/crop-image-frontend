@@ -18,18 +18,15 @@ let cropImage
 let tg = window.Telegram.WebApp
 let queryId = tg.initDataUnsafe?.query_id
 let userId = tg.initDataUnsafe?.user?.id
-const options = {
-  'Content-Security-Policy': 'upgrade-insecure-requests',
-}
 
 tg.expand();
 
-fetch(path, options)
+fetch(path)
   .then(res => res.json())
   .then(data => console.log(data))
   .catch(err => console.log(err))
 
-fetch(`${path}/get`, options)
+fetch(`${path}/get`)
   .then(res => res.json())
   .then(data => console.log(data))
   .catch(err => console.log(err))
@@ -83,7 +80,6 @@ selectBtn.addEventListener('click', () => {
 
       fetch(`${path}/submit`, {
         method: 'POST',
-        'Content-Security-Policy': 'upgrade-insecure-requests',
         body: formData,
       })
         .then(res => res.json())
