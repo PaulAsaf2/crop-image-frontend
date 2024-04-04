@@ -13,7 +13,7 @@ let fileTypes = [
   'image/gif',
   'image/heic',
 ]
-const path = 'http://nodeapi.ru/'
+const path = 'http://nodeapi.ru/api'
 let cropImage
 let tg = window.Telegram.WebApp
 let queryId = tg.initDataUnsafe?.query_id
