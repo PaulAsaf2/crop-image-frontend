@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crop Image</title>
+  <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
+  <link rel="stylesheet" href="style.css" type="text/css">
+  <link rel="stylesheet" href="croppie.css" type="text/css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Acme&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+  <section class="select_section">
+    <div class="logo_cont">
+      <img
+        src="./assets/logo-black.png"
+        alt="logo"
+        class="logo"
+      >
+      <h1 class="logo_text">WALLSTRING</h1>
+    </div>
+
+    <div class="upload_cont">
+      <label
+        for="image_uploads"
+        class="image_label"
+        >Загрузите ваше изображение
+      </label>
+      <input
+        type="file"
+        id="image_uploads"
+        name="image_uploads"
+        accept=".jpeg, .jpg, .png, .gif, .heic"
+        class="image_input"
+      >
+    </div>  
+  </section>
+
+  <section class="crop_section">
+    <div class="crop_cont">
+      <img
+        src=""
+        alt=""
+        id="image"
+        class="crop_image"
+      >
+      <div class="crop_btn_cont">
+        <button
+          type="button"
+          class="crop_btn"
+          id="back_btn"
+          >Назад
+        </button>
+        <button
+          type="button"
+          class="crop_btn"
+          id="select_btn"
+          >Выбрать
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <script src="croppie.js"></script>
+  <script src="index.js"></script>
+</body>
+</html>
