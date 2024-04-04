@@ -21,6 +21,11 @@ let userId = tg.initDataUnsafe?.user?.id
 
 tg.expand();
 
+fetch(path)
+  .then(res => res.json())
+  .then(data => console.log(data))
+  .catch(err => console.log(err))
+
 fetch(`${path}/get`)
   .then(res => res.json())
   .then(data => console.log(data))
@@ -78,40 +83,8 @@ selectBtn.addEventListener('click', () => {
         body: formData,
       })
         .then(res => res.json())
-        .then(data => {
-          const { message } = data;
-          if (message === 'Upload succeed!') {
-            // tg.close();
-            console.log(data);
-          } else {
-            alert('Изображение не загрузилось. Попробуйте снова');
-            console.log(data);
-          }
-        })
-        .catch(err => {
-          console.log(err)
-          alert('Изображение не загрузилось. Попробуйте снова');
-        });
-
-        fetch(`https://api.puzzlebot.top/?token=CwzFVdWEkfZfud657lWqyes9zPhgOy1G&method=scenarioRun&user_id=${userId}&scenario_id=82086`, {
-          // mode: 'no-cors',
-        })
-          .then(res => res.json())
-          .then(data => console.log(data))
-          .catch(err => console.log(err));
-
-
-
-        // fetch(`
-        // https://pin.sourctech.ru/telegram/string/variableSet.php
-        // ?img={имя файла который обрезали}
-        // &userId={id пользователя телеграм}
-        // &promocode={промокод из get запроса, который ты сохранил в переменную}`, {
-        //   mode: 'no-cors',
-        // })
-          // .then(res => res.json())
-          // .then(data => console.log(data))
-          // .catch(err => console.log(err));
+        .then(data => console.log(data))
+        .catch(err => console.log(err));
     })
     .catch(error => console.log(error))
 })
