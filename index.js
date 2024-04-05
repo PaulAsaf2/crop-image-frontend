@@ -21,8 +21,6 @@ let userId = tg.initDataUnsafe?.user?.id
 
 tg.expand();
 
-
-
 function validFileType(file) {
   return fileTypes.includes(file.type)
 }
@@ -33,7 +31,7 @@ function updateImageDisplay() {
   if (validFileType(curFile)) {
     imageEl.src = URL.createObjectURL(curFile)
     imageEl.alt = image.title = curFile.name
-    
+
     addToCroppie()
     selectSection.style.display = 'none'
     cropSection.style.display = 'block'
@@ -58,14 +56,14 @@ backBtn.addEventListener('click', () => {
 })
 
 selectBtn.addEventListener('click', () => {
-  cropImage.result({type: 'blob', size: 'viewport'})
+  cropImage.result({ type: 'blob', size: 'viewport' })
     .then((blob) => {
       let imgEl = document.createElement('img')
       imgEl.src = URL.createObjectURL(blob)
       cropCont.innerHTML = ''
       cropCont.append(imgEl)
       cropCont.classList.add('flex')
-      
+
       const formData = new FormData();
       formData.append('image', blob, 'filename')
       formData.append('name', 'Paul');
@@ -75,16 +73,22 @@ selectBtn.addEventListener('click', () => {
         body: formData,
       })
         .then(res => res.json())
-        .then(data => console.log(data))
+        .then(data => {
+          let fileName = data.message;
+
+          fetch(`${path}/get-code`)
+            .then(res => res.json())
+            .then(data => {
+              let codeID = data.message;
+              
+              console.log(fileName);
+              console.log(codeID);
+              console.log(userId);
+            })
+            .catch(err => console.log(err))
+        })
         .catch(err => console.log(err));
 
-      fetch(`${path}/get-code`)
-        .then(res => res.json())
-        .then(data => {
-          console.log(data);
-          console.log(userId);
-        })
-        .catch(err => console.log(err))
     })
     .catch(error => console.log(error))
 })
