@@ -21,12 +21,7 @@ let userId = tg.initDataUnsafe?.user?.id
 
 tg.expand();
 
-fetch(path)
-  .then(res => res.json())
-  .then(data => console.log(data))
-  .catch(err => console.log(err))
-
-fetch(`${path}/get`)
+fetch(`${path}/get-code`)
   .then(res => res.json())
   .then(data => console.log(data))
   .catch(err => console.log(err))
