@@ -80,7 +80,10 @@ selectBtn.addEventListener('click', () => {
 
       fetch(`${path}/get-code`)
         .then(res => res.json())
-        .then(data => console.log(data))
+        .then(data => {
+          console.log(data);
+          console.log(userId);
+        })
         .catch(err => console.log(err))
     })
     .catch(error => console.log(error))
