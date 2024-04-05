@@ -21,10 +21,12 @@ let userId = tg.initDataUnsafe?.user?.id
 
 tg.expand();
 
-fetch(`${path}/get-code`)
+document.addEventListener('DOMContentLoaded', () => {
+  fetch(`${path}/get-code`)
   .then(res => res.json())
   .then(data => console.log(data))
   .catch(err => console.log(err))
+})
 
 function validFileType(file) {
   return fileTypes.includes(file.type)
