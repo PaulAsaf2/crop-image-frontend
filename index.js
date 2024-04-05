@@ -76,14 +76,22 @@ selectBtn.addEventListener('click', () => {
         .then(data => {
           let fileName = data.message;
 
+          fetch(`https://api.puzzlebot.top/?token=CwzFVdWEkfZfud657lWqyes9zPhgOy1G&method=scenarioRun&user_id=${userId}&scenario_id=82086`, {
+            // mode: 'no-cors',
+          })
+            .then(res => res.json())
+            .then(data => console.log(data))
+            .catch(err => console.log(err));
+
           fetch(`${path}/get-code`)
             .then(res => res.json())
             .then(data => {
               let codeID = data.message;
-              
-              console.log(fileName);
-              console.log(codeID);
-              console.log(userId);
+
+              fetch(`https://pin.sourctech.ru/telegram/string/variableSet.php?img=${fileName}&userId=${userId}&promocode=${codeID}`)
+                .then(res => res.json())
+                .then(data => console.log(data))
+                .catch(err => console.log(err))
             })
             .catch(err => console.log(err))
         })
