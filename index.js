@@ -14,7 +14,7 @@ let fileTypes = [
   'image/heic',
 ]
 const path = 'https://86a0416fd324.vps.myjino.ru/api'
-let cropImage
+let cropImage, codeID
 let tg = window.Telegram.WebApp
 let queryId = tg.initDataUnsafe?.query_id
 let userId = tg.initDataUnsafe?.user?.id
@@ -24,9 +24,11 @@ tg.expand();
 document.addEventListener('DOMContentLoaded', () => {
   fetch(`${path}/get-code`)
   .then(res => res.json())
-  .then(data => console.log(data))
+  .then(data => codeID = data)
   .catch(err => console.log(err))
 })
+
+console.log(codeID);
 
 function validFileType(file) {
   return fileTypes.includes(file.type)
