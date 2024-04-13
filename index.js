@@ -13,13 +13,15 @@ let fileTypes = [
   'image/gif',
   'image/heic',
 ]
-const path = 'https://127.0.0.1:3000/api'
-let cropImage
-let tg = window.Telegram.WebApp
-// let queryId = tg.initDataUnsafe?.query_id
-// let userId = tg.initDataUnsafe?.user?.id
+const path = 'https://127.0.0.1:3000/api';
+let cropImage;
+let tg = window.Telegram.WebApp;
+let queryId = tg.initDataUnsafe?.query_id;
+let userId = tg.initDataUnsafe?.user?.id;
 
 tg.expand();
+
+// FUNCTIONS --- FUNCTIONS --- FUNCTIONS
 
 function validFileType(file) {
   return fileTypes.includes(file.type)
@@ -49,10 +51,12 @@ function addToCroppie() {
   });
 }
 
+// LISTENERS --- LISTENERS --- LISTENERS
+
 inputUpload.addEventListener('change', updateImageDisplay)
+
 backBtn.addEventListener('click', () => {
-  selectSection.style.display = 'block'
-  cropSection.style.display = 'none'
+  window.location.reload()
 })
 
 selectBtn.addEventListener('click', () => {
