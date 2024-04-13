@@ -13,11 +13,11 @@ let fileTypes = [
   'image/gif',
   'image/heic',
 ]
-const path = 'https://86a0416fd324.vps.myjino.ru/api'
+const path = 'https://127.0.0.1:3000/api'
 let cropImage
 let tg = window.Telegram.WebApp
-let queryId = tg.initDataUnsafe?.query_id
-let userId = tg.initDataUnsafe?.user?.id
+// let queryId = tg.initDataUnsafe?.query_id
+// let userId = tg.initDataUnsafe?.user?.id
 
 tg.expand();
 
@@ -66,32 +66,45 @@ selectBtn.addEventListener('click', () => {
 
       const formData = new FormData();
       formData.append('image', blob, 'filename')
-      formData.append('name', 'Paul');
+      // formData.append('name', 'Paul');
 
-      fetch(`${path}/submit`, {
+      fetch(`${path}/get-code`)
+      .then(res => res.json())
+      .then(data => {
+        let codeID = data.message;
+        console.log(codeID);
+      })
+      .catch(err => console.log(err))
+
+      fetch(`${path}/upload`, {
         method: 'POST',
         body: formData,
       })
         .then(res => res.json())
         .then(data => {
-          let fileName = data.message;
+          // let fileName = data.message;
+          console.log(data);
 
-          fetch(`https://api.puzzlebot.top/?token=CwzFVdWEkfZfud657lWqyes9zPhgOy1G&method=scenarioRun&user_id=${userId}&scenario_id=82086`, {
-            // mode: 'no-cors',
-          })
-            .then(res => res.json())
-            .then(data => console.log(data))
-            .catch(err => console.log(err));
+          // fetch(`https://api.puzzlebot.top/?token=CwzFVdWEkfZfud657lWqyes9zPhgOy1G&method=scenarioRun&user_id=${userId}&scenario_id=82086`, {
+          //   mode: 'no-cors',
+          // })
+          //   .then(res => res.json())
+          //   .then(data => console.log(data))
+          //   .catch(err => console.log(err));
 
           fetch(`${path}/get-code`)
             .then(res => res.json())
             .then(data => {
               let codeID = data.message;
 
-              fetch(`https://pin.sourctech.ru/telegram/string/variableSet.php?img=${fileName}&userId=${userId}&promocode=${codeID}`)
-                .then(res => res.json())
-                .then(data => console.log(data))
-                .catch(err => console.log(err))
+              console.log(codeID);
+
+              // fetch(`https://pin.sourctech.ru/telegram/string/variableSet.php?img=${fileName}&userId=${userId}&promocode=${codeID}`, {
+              //   mode: 'no-cors',
+              // })
+              //   .then(res => res.json())
+              //   .then(data => console.log(data))
+              //   .catch(err => console.log(err))
             })
             .catch(err => console.log(err))
         })
