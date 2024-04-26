@@ -51,15 +51,7 @@ function addToCroppie() {
   });
 }
 
-// LISTENERS --- LISTENERS --- LISTENERS
-
-inputUpload.addEventListener('change', updateImageDisplay)
-
-backBtn.addEventListener('click', () => {
-  window.location.reload()
-})
-
-selectBtn.addEventListener('click', () => {
+function addImageToPage() {
   cropImage.result({ type: 'blob', size: 'viewport' })
     .then((blob) => {
       let imgEl = document.createElement('img')
@@ -68,52 +60,65 @@ selectBtn.addEventListener('click', () => {
       cropCont.append(imgEl)
       cropCont.classList.add('flex')
 
-      const formData = new FormData();
-      formData.append('image', blob, 'filename')
-      // formData.append('name', 'Paul');
-
-      fetch(`${path}/get-code`)
-      .then(res => res.json())
-      .then(data => {
-        let codeID = data.message;
-        console.log(codeID);
-      })
-      .catch(err => console.log(err))
-
-      fetch(`${path}/upload`, {
-        method: 'POST',
-        body: formData,
-      })
-        .then(res => res.json())
-        .then(data => {
-          // let fileName = data.message;
-          console.log(data);
-
-          // fetch(`https://api.puzzlebot.top/?token=CwzFVdWEkfZfud657lWqyes9zPhgOy1G&method=scenarioRun&user_id=${userId}&scenario_id=82086`, {
-          //   mode: 'no-cors',
-          // })
-          //   .then(res => res.json())
-          //   .then(data => console.log(data))
-          //   .catch(err => console.log(err));
-
-          fetch(`${path}/get-code`)
-            .then(res => res.json())
-            .then(data => {
-              let codeID = data.message;
-
-              console.log(codeID);
-
-              // fetch(`https://pin.sourctech.ru/telegram/string/variableSet.php?img=${fileName}&userId=${userId}&promocode=${codeID}`, {
-              //   mode: 'no-cors',
-              // })
-              //   .then(res => res.json())
-              //   .then(data => console.log(data))
-              //   .catch(err => console.log(err))
-            })
-            .catch(err => console.log(err))
-        })
-        .catch(err => console.log(err));
-
+      uploadImage(blob)
     })
     .catch(error => console.log(error))
+}
+
+// REQUESTS --- REQUESTS --- REQUESTS
+
+function uploadImage(blob) {
+  const formData = new FormData();
+  formData.append('image', blob, 'filename')
+
+  fetch(`${path}/upload`, {
+    method: 'POST',
+    body: formData,
+  })
+    .then(res => res.json())
+    .then(data => {
+      let fileName = data.message
+      requestToPuzzlebot()
+      getCode(fileName)
+    })
+    .catch(err => {
+      alert('При загрузке изображения произошла ошибка.')
+      console.log(err)
+    });
+}
+
+function requestToPuzzlebot() {
+  fetch(`https://api.puzzlebot.top/?token=CwzFVdWEkfZfud657lWqyes9zPhgOy1G&method=scenarioRun&user_id=${userId}&scenario_id=82086`, {
+    mode: 'no-cors',
+  })
+    .then(res => res.json())
+    .then(data => console.log(data))
+    .catch(err => console.log(err));
+}
+
+function getCode(fileName) {
+  fetch(`${path}/get-code`)
+    .then(res => res.json())
+    .then(data => {
+      let codeID = data.message;
+
+      fetch(`https://pin.sourctech.ru/telegram/string/variableSet.php?img=${fileName}&userId=${userId}&promocode=${codeID}`, {
+        mode: 'no-cors',
+      })
+        .then(res => res.json())
+        .then(data => console.log(data))
+        .catch(err => console.log(err))
+    })
+    .catch(err => {
+      alert('При чтении параметра code произошла ошибка.')
+      console.log(err)
+    });
+}
+
+// LISTENERS --- LISTENERS --- LISTENERS
+
+inputUpload.addEventListener('change', updateImageDisplay)
+backBtn.addEventListener('click', () => {
+  window.location.reload()
 })
+selectBtn.addEventListener('click', addImageToPage)
