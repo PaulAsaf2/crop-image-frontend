@@ -13,7 +13,8 @@ let fileTypes = [
   'image/gif',
   'image/heic',
 ]
-const path = 'https://127.0.0.1:3000/api';
+// const path = 'https://127.0.0.1:3000/api';
+const path = 'https://86a0416fd324.vps.myjino.ru/api';
 let cropImage;
 let tg = window.Telegram.WebApp;
 let queryId = tg.initDataUnsafe?.query_id;
