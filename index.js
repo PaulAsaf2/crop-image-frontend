@@ -81,6 +81,7 @@ function uploadImage(blob) {
       let fileName = data.message
       requestToPuzzlebot()
       getCode(fileName)
+      tg.close()
     })
     .catch(err => {
       alert('При загрузке изображения произошла ошибка.')
