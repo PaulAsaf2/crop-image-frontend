@@ -6,6 +6,8 @@ let cropBtnSection = document.querySelector('.crop_btn_cont');
 let backBtn = document.getElementById('back_btn');
 let selectBtn = document.getElementById('select_btn');
 let imageEl = document.getElementById('image');
+const tgErrorPopup = document.querySelector('#tg-error')
+const successSection = document.querySelector('.success')
 let fileTypes = [
   'image/jpeg',
   'image/jpg',
@@ -13,16 +15,76 @@ let fileTypes = [
   'image/gif',
   'image/heic',
 ]
-// const path = 'https://127.0.0.1:3000/api';
-const path = 'https://86a0416fd324.vps.myjino.ru/api';
+const path = 'https://127.0.0.1:3000/api';
+// const path = 'https://86a0416fd324.vps.myjino.ru/api';
 let cropImage;
 let tg = window.Telegram.WebApp;
-let queryId = tg.initDataUnsafe?.query_id;
-let userId = tg.initDataUnsafe?.user?.id;
+// let queryId = tg.initDataUnsafe?.query_id;
+// let userId = tg.initDataUnsafe?.user?.id;
+
 
 tg.expand();
 
+checkInitData(tg.initData)
+  .then(() => {
+    getPromocode()
+      .catch(error => {
+        console.error(error)
+        tg.showAlert('Промокод не найден.')
+      })
+  })
+  .catch(error => {
+    console.error(error);
+    linkToTelegram()
+  })
+
 // FUNCTIONS --- FUNCTIONS --- FUNCTIONS
+
+function checkInitData(initData) {
+  // /api/validate.php
+  return fetch('https://wallstring.monitour.ru/api/validate.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ initData })
+  })
+    .then(res => {
+      if (res.ok) return res.json()
+      throw new Error('HTTP-Error: ' + res.status)
+    })
+    .then(data => {
+      const user = JSON.parse(data.initData.user)
+      tg.CloudStorage.setItem('userId', user.id)
+      return user.id
+
+      // TEMPORARY
+      // let fakeUserId = '123'
+      // tg.CloudStorage.setItem('userId', fakeUserId)
+
+      // return fakeUserId
+      // ---------
+    })
+}
+
+function linkToTelegram() {
+  tgErrorPopup.classList.add('popup_fullwidth_show')
+}
+
+function getPromocode() {
+  return new Promise((resolve, reject) => {
+    const queryString = window.location.search
+    const urlParams = new URLSearchParams(queryString)
+    const promocode = urlParams.get('promocode')
+
+    if (promocode) {
+      tg.CloudStorage.setItem('promocode', promocode)
+      resolve(promocode)
+    } else {
+      reject('Promocode not found')
+    }
+  })
+}
 
 function validFileType(file) {
   return fileTypes.includes(file.type)
@@ -62,33 +124,81 @@ function addImageToPage() {
       cropCont.classList.add('flex')
 
       uploadImage(blob)
+        .then(() => {
+          console.log('Image was successfully uploaded!')
+        })
+        .catch(err => {
+          console.error('BLA!')
+          console.error(err)
+        });
     })
     .catch(error => console.log(error))
+}
+
+function showSuccess() {
+  successSection.classList.add('success_show')
+  cropSection.style.display = 'none'
+  // setTimeout(() => tg.close(), 3000)
 }
 
 // REQUESTS --- REQUESTS --- REQUESTS
 
 function uploadImage(blob) {
+  const imageName = `image_${Date.now()}`
   const formData = new FormData();
-  formData.append('image', blob, 'filename')
+  formData.append('image', blob, imageName)
 
-  fetch(`${path}/upload`, {
+  return fetch('https://wallstring.monitour.ru/api/upload-image.php', {
     method: 'POST',
     body: formData,
   })
-    .then(res => res.json())
-    .then(data => {
-      let fileName = data.message
-      requestToPuzzlebot()
-      getCode(fileName)
-      tg.close()
+    .then(res => {
+      if (res.ok) return res.json()
+      throw new Error('Response is not OK!')
     })
-    .catch(err => {
-      alert('При загрузке изображения произошла ошибка.')
-      console.log(err)
-    });
+    .then(data => {
+      return new Promise((resolve, reject) => {
+        tg.CloudStorage.getItems(['userId', 'promocode'], (error, variables) => {
+          if (error) {
+            reject(error)
+          } else if (!variables.userId || !variables.promocode) {
+            reject('Failed to retrieve user data.')
+          } else {
+            const userId = variables.userId
+            const promocode = variables.promocode
+            const fileName = data.message
+
+            resolve({ userId, promocode, fileName })
+          }
+        })
+      })
+    })
+    .then(({ userId, promocode, fileName }) => {
+      return requestToPuzzlebot(userId)
+        .then(() => {
+          return requestToSourctech(userId, promocode, fileName)
+        })
+    })
 }
 
+function requestToPuzzlebot(userId) {
+  return fetch(`https://api.puzzlebot.top/?token=CwzFVdWEkfZfud657lWqyes9zPhgOy1G&method=scenarioRun&user_id=${userId}&scenario_id=82086`, {
+    mode: 'no-cors',
+  })
+    .then(res => console.log('Request completed. Note: Response is opaque and cannot be inspected due to no-cors mode.'))
+}
+
+function requestToSourctech(userId, promocode, fileName) {
+  return fetch(`https://pin.sourctech.ru/telegram/string/variableSet.php?img=${fileName}&userId=${userId}&promocode=${promocode}`)
+    .then(res => {
+      if (!res.ok) {
+        throw new Error('HTTP Error! Status: ' + res.status)
+      } else {
+        console.log('Request successful')
+      }
+    })
+}
+/*
 function requestToPuzzlebot() {
   fetch(`https://api.puzzlebot.top/?token=CwzFVdWEkfZfud657lWqyes9zPhgOy1G&method=scenarioRun&user_id=${userId}&scenario_id=82086`, {
     mode: 'no-cors',
@@ -116,7 +226,7 @@ function getCode(fileName) {
       console.log(err)
     });
 }
-
+*/
 // LISTENERS --- LISTENERS --- LISTENERS
 
 inputUpload.addEventListener('change', updateImageDisplay)

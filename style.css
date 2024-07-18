@@ -1,14 +1,11 @@
 body {
-  /* outline: 2px solid gray; */
   background-color: #F6F6F6;
-  /* background-color: lightgray; */
   /* <weight>: Use a value from 300 to 800 */
   font-family: "Open Sans", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
   font-variation-settings: "wdth" 100;
-  /* height: 97vh; */
   }
 
 /* SELECT SECTION --- SELECT SECTION */
@@ -18,13 +15,15 @@ body {
   align-items: center;
   column-gap: 22px;
   margin: 50px 16px 87px 16px;
-  /* outline: thin solid red; */
+}
+
+.logo_cont_tg-error {
+  margin: 0;
 }
 
 .logo {
   width: 80px;
   height: 80px;
-  /* outline: thin solid green; */
 }
 
 .logo_text {
@@ -46,6 +45,11 @@ body {
   box-shadow: 0 4px 18px #dbdae2;
 }
 
+.upload_cont_success {
+  padding: 30px 0;
+  font-weight: 600;
+}
+
 .image_label {
   cursor: pointer;
   color: #5D586C;
@@ -60,14 +64,12 @@ body {
 }
 
 .image_input {
-  /* opacity: 0; */
   z-index: -1;
 }
 
 /* CROP SECTION --- CROP SECTION */
 .crop_section {
   display: none;
-  /* outline: 2px solid red; */
   margin: 60px 16px 0 16px;
 }
 
@@ -106,6 +108,60 @@ body {
 .cr-boundary {
   border-radius: 20px;
 }
+
+/* TG ERROR */
+.popup_fullwidth {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  row-gap: 50px;
+}
+
+.popup_fullwidth_show {
+  display: flex;
+}
+
+.tg-error_logo {
+  width: 80px;
+  height: 80px;
+}
+
+.tg-error_text {
+  font-size: 16px;
+  text-align: center;
+}
+
+.tg-error_button {
+  font-size: 16px;
+  color: white;
+  padding: 10px 80px;
+  cursor: pointer;
+  background-color: #54a9eb;
+  border: none;
+  border-radius: 14px;
+}
+/* END of TG ERROR */
+
+/* SUCCESS */
+.success {
+  display: none;
+}
+
+.success_show {
+  display: block;
+}
+
+.success_logo_cont {
+  margin: 50px 16px 140px 16px;
+}
+/* END of SUCCESS */
 
 @media screen and (max-width: 382px) {
   .logo_text {

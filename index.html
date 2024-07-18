@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Crop Image</title>
-  <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
+  <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
   <link rel="stylesheet" href="style.css" type="text/css">
   <link rel="stylesheet" href="croppie.css" type="text/css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,6 +16,21 @@
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
+  <section class="success">
+    <div class="logo_cont success_logo_cont">
+      <img
+        src="./assets/logo-black.png"
+        alt="logo"
+        class="logo"
+      >
+      <h1 class="logo_text">WALLSTRING</h1>
+    </div>
+
+    <div class="upload_cont upload_cont_success">
+      Изображение отправлено
+    </div>  
+  </section>
+
   <section class="select_section">
     <div class="logo_cont">
       <img
@@ -66,6 +81,31 @@
       </div>
     </div>
   </section>
+  <!-- LINK to TELEGRAM -->
+    <div
+      id="tg-error"
+      class="popup_fullwidth"
+    >
+    <div class="logo_cont logo_cont_tg-error">
+      <img
+        src="./assets/logo-black.png"
+        alt="logo"
+        class="logo"
+      >
+      <h1 class="logo_text">WALLSTRING</h1>
+    </div>
+    <h1 class="tg-error_text">
+      Для работы с приложением необходимо зайти через Telegram
+    </h1>
+    <a href="https://t.me/pavel_asafov_test_bot">
+      <button
+        class="tg-error_button"
+        type="button">
+        Перейти
+      </button>
+    </a>
+  </div>
+  <!-- END of LINK to TELEGRAM -->
 
   <script src="croppie.js"></script>
   <script src="index.js"></script>
