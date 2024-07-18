@@ -7,7 +7,9 @@ let backBtn = document.getElementById('back_btn');
 let selectBtn = document.getElementById('select_btn');
 let imageEl = document.getElementById('image');
 const tgErrorPopup = document.querySelector('#tg-error')
-const successSection = document.querySelector('.success')
+const successSection = document.querySelector('.result')
+const resultText = document.querySelector('.result_text')
+const resultIcon = document.querySelector('.result_icon')
 let fileTypes = [
   'image/jpeg',
   'image/jpg',
@@ -15,13 +17,8 @@ let fileTypes = [
   'image/gif',
   'image/heic',
 ]
-const path = 'https://127.0.0.1:3000/api';
-// const path = 'https://86a0416fd324.vps.myjino.ru/api';
 let cropImage;
 let tg = window.Telegram.WebApp;
-// let queryId = tg.initDataUnsafe?.query_id;
-// let userId = tg.initDataUnsafe?.user?.id;
-
 
 tg.expand();
 
@@ -123,22 +120,32 @@ function addImageToPage() {
       cropCont.append(imgEl)
       cropCont.classList.add('flex')
 
+      let loadIcon = document.createElement('img')
+      loadIcon.src = './assets/loading.svg'
+      loadIcon.classList.add('load-icon')
+      cropCont.append(loadIcon)
+
       uploadImage(blob)
         .then(() => {
-          console.log('Image was successfully uploaded!')
+          showResultOfUploaded('Изображение отправлено', 'done')
+          setTimeout(() => tg.close(), 3000)
         })
         .catch(err => {
-          console.error('BLA!')
           console.error(err)
-        });
+          showResultOfUploaded('При загрузке произошла ошибка', 'close')
+        })
+        .finally(() => {
+          loadIcon.remove()
+        })
     })
-    .catch(error => console.log(error))
+    .catch(error => console.error(error))
 }
 
-function showSuccess() {
-  successSection.classList.add('success_show')
+function showResultOfUploaded(text, icon) {
+  successSection.classList.add('result_show')
   cropSection.style.display = 'none'
-  // setTimeout(() => tg.close(), 3000)
+  resultIcon.src = `./assets/${icon}.png`
+  resultText.textContent = text
 }
 
 // REQUESTS --- REQUESTS --- REQUESTS
@@ -198,35 +205,6 @@ function requestToSourctech(userId, promocode, fileName) {
       }
     })
 }
-/*
-function requestToPuzzlebot() {
-  fetch(`https://api.puzzlebot.top/?token=CwzFVdWEkfZfud657lWqyes9zPhgOy1G&method=scenarioRun&user_id=${userId}&scenario_id=82086`, {
-    mode: 'no-cors',
-  })
-    .then(res => res.json())
-    .then(data => console.log(data))
-    .catch(err => console.log(err));
-}
-
-function getCode(fileName) {
-  fetch(`${path}/get-code`)
-    .then(res => res.json())
-    .then(data => {
-      let codeID = data.message;
-
-      fetch(`https://pin.sourctech.ru/telegram/string/variableSet.php?img=${fileName}&userId=${userId}&promocode=${codeID}`, {
-        mode: 'no-cors',
-      })
-        .then(res => res.json())
-        .then(data => console.log(data))
-        .catch(err => console.log(err))
-    })
-    .catch(err => {
-      alert('При чтении параметра code произошла ошибка.')
-      console.log(err)
-    });
-}
-*/
 // LISTENERS --- LISTENERS --- LISTENERS
 
 inputUpload.addEventListener('change', updateImageDisplay)

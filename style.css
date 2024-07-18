@@ -45,7 +45,7 @@ body {
   box-shadow: 0 4px 18px #dbdae2;
 }
 
-.upload_cont_success {
+.upload_cont_result {
   padding: 30px 0;
   font-weight: 600;
 }
@@ -74,6 +74,7 @@ body {
 }
 
 .crop_cont {
+  position: relative;
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 4px 18px #dbdae2;
@@ -102,6 +103,13 @@ body {
   background-color: #7367F0;
   color: white;
   cursor: pointer;
+}
+
+.load-icon {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  bottom: 16px;
 }
 
 /* END CROP SECTION --- END CROP SECTION */
@@ -150,16 +158,21 @@ body {
 /* END of TG ERROR */
 
 /* SUCCESS */
-.success {
+.result {
   display: none;
 }
 
-.success_show {
+.result_show {
   display: block;
 }
 
-.success_logo_cont {
+.result_logo_cont {
   margin: 50px 16px 140px 16px;
+}
+
+.result_icon {
+  width: 42px;
+  height: 42px;
 }
 /* END of SUCCESS */
 
