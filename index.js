@@ -10,6 +10,7 @@ const tgErrorPopup = document.querySelector('#tg-error')
 const successSection = document.querySelector('.result')
 const resultText = document.querySelector('.result_text')
 const resultIcon = document.querySelector('.result_icon')
+const imageLabel = document.querySelector('.image_label')
 let fileTypes = [
   'image/jpeg',
   'image/jpg',
@@ -28,6 +29,7 @@ checkInitData(tg.initData)
       .catch(error => {
         console.error(error)
         tg.showAlert('Промокод не найден.')
+        disableInput()
       })
   })
   .catch(error => {
@@ -36,6 +38,11 @@ checkInitData(tg.initData)
   })
 
 // FUNCTIONS --- FUNCTIONS --- FUNCTIONS
+
+function disableInput() {
+  inputUpload.disabled = true
+  imageLabel.classList.add('image_label_disable')
+}
 
 function checkInitData(initData) {
   // /api/validate.php

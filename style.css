@@ -63,6 +63,11 @@ body {
   background-position: center 16px;
 }
 
+.image_label_disable {
+  cursor: default;
+  outline: 2px dashed #bcbcbc;
+}
+
 .image_input {
   z-index: -1;
 }
