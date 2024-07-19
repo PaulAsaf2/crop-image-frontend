@@ -1,17 +1,21 @@
-let inputUpload = document.getElementById('image_uploads');
-let selectSection = document.querySelector('.select_section');
-let cropSection = document.querySelector('.crop_section');
-let cropCont = document.querySelector('.crop_cont');
-let cropBtnSection = document.querySelector('.crop_btn_cont');
-let backBtn = document.getElementById('back_btn');
-let selectBtn = document.getElementById('select_btn');
-let imageEl = document.getElementById('image');
+const inputUpload = document.getElementById('image_uploads');
+const selectSection = document.querySelector('.select');
+const cropSection = document.querySelector('.crop_section');
+const cropCont = document.querySelector('.crop_cont');
+const cropBtnSection = document.querySelector('.crop_btn_cont');
+const backBtn = document.getElementById('back_btn');
+const cropBtns = Array.from(document.querySelectorAll('.crop_btn'));
+const selectBtn = document.getElementById('select_btn');
+const imageEl = document.getElementById('image');
 const tgErrorPopup = document.querySelector('#tg-error')
-const successSection = document.querySelector('.result')
 const resultText = document.querySelector('.result_text')
 const resultIcon = document.querySelector('.result_icon')
 const imageLabel = document.querySelector('.image_label')
-let fileTypes = [
+const uploadCont = document.querySelector('.upload_cont')
+const uploadContResult = document.querySelector('.upload_cont_result')
+const logoCont = document.querySelector('.logo_cont')
+const logo = document.querySelector('.logo')
+const fileTypes = [
   'image/jpeg',
   'image/jpg',
   'image/png',
@@ -19,9 +23,10 @@ let fileTypes = [
   'image/heic',
 ]
 let cropImage;
-let tg = window.Telegram.WebApp;
+const tg = window.Telegram.WebApp;
 
 tg.expand();
+setTheme()
 
 checkInitData(tg.initData)
   .then(() => {
@@ -38,6 +43,24 @@ checkInitData(tg.initData)
   })
 
 // FUNCTIONS --- FUNCTIONS --- FUNCTIONS
+
+function setTheme() {
+  if (tg.colorScheme == 'dark') {
+    logo.src = './assets/logo-white.png'
+    uploadCont.classList.add('cont_dark')
+    cropCont.classList.add('cont_dark')
+    uploadContResult.classList.add('cont_dark')
+    imageLabel.classList.add('image_label_dark')
+    cropBtns.forEach(btn => btn.classList.add('crop_btn_dark') )
+  } else {
+    logo.src = './assets/logo-black.png'
+    uploadCont.classList.remove('cont_dark')
+    cropCont.classList.remove('cont_dark')
+    uploadContResult.classList.remove('cont_dark')
+    imageLabel.classList.remove('image_label_dark')
+    cropBtns.forEach(btn => btn.classList.remove('crop_btn_dark') )
+  }
+}
 
 function disableInput() {
   inputUpload.disabled = true
@@ -106,7 +129,7 @@ function updateImageDisplay() {
     cropSection.style.display = 'block'
     cropCont.appendChild(cropBtnSection)
   } else {
-    alert('File is not valid.')
+    tg.showAlert('File is not valid.')
   }
 }
 
@@ -135,7 +158,7 @@ function addImageToPage() {
       uploadImage(blob)
         .then(() => {
           showResultOfUploaded('Изображение отправлено', 'done')
-          setTimeout(() => tg.close(), 3000)
+          // setTimeout(() => tg.close(), 3000)
         })
         .catch(err => {
           console.error(err)
@@ -149,8 +172,11 @@ function addImageToPage() {
 }
 
 function showResultOfUploaded(text, icon) {
-  successSection.classList.add('result_show')
   cropSection.style.display = 'none'
+  selectSection.style.display = 'block'
+  uploadCont.style.display = 'none'
+  uploadContResult.style.display = 'flex'
+  logoCont.classList.add('result_logo_cont')
   resultIcon.src = `./assets/${icon}.png`
   resultText.textContent = text
 }
@@ -219,3 +245,4 @@ backBtn.addEventListener('click', () => {
   window.location.reload()
 })
 selectBtn.addEventListener('click', addImageToPage)
+tg.onEvent('themeChanged', setTheme)

@@ -1,5 +1,5 @@
 body {
-  background-color: #F6F6F6;
+  background-color: var(--tg-theme-bg-color);
   /* <weight>: Use a value from 300 to 800 */
   font-family: "Open Sans", sans-serif;
   font-optical-sizing: auto;
@@ -31,10 +31,11 @@ body {
   font-weight: 400;
   font-size: 42px;
   margin: 0;
+  color: var(--tg-theme-text-color);
 }
 
 .upload_cont {
-  background-color: white;
+  background-color: var(--tg-theme-bg-color);
   border-radius: 10px;
   margin: 0 16px;
   padding: 54px 22px 33px 22px;
@@ -46,6 +47,7 @@ body {
 }
 
 .upload_cont_result {
+  display: none;
   padding: 30px 0;
   font-weight: 600;
 }
@@ -61,6 +63,11 @@ body {
   background-image: url(./assets/icon_upload.svg);
   background-repeat: no-repeat;
   background-position: center 16px;
+}
+
+.image_label_dark {
+  color: #b5adcd;
+  background-image: url(./assets/icon_upload_dark.svg);
 }
 
 .image_label_disable {
@@ -80,7 +87,7 @@ body {
 
 .crop_cont {
   position: relative;
-  background-color: white;
+  background-color: var(--tg-theme-bg-color);
   border-radius: 10px;
   box-shadow: 0 4px 18px #dbdae2;
   padding: 30px 0 110px 0;
@@ -108,6 +115,10 @@ body {
   background-color: #7367F0;
   color: white;
   cursor: pointer;
+}
+
+.crop_btn_dark {
+  background-color: #3c3587;
 }
 
 .load-icon {
@@ -175,11 +186,21 @@ body {
   margin: 50px 16px 140px 16px;
 }
 
+.result_text {
+  color: var(--tg-theme-text-color);
+}
+
 .result_icon {
   width: 42px;
   height: 42px;
 }
 /* END of SUCCESS */
+
+/* DARK THEME */
+.cont_dark {
+  box-shadow: 0 4px 18px #5f588f;
+}
+/* END of DARK THEME */
 
 @media screen and (max-width: 382px) {
   .logo_text {
